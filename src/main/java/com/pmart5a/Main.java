@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.LongAdder;
 public class Main {
 
     static final int NUMBER_GROCERY_STORE = 3;
+    static final int TIMEOUT = 3;
 
     public static void main(String[] args) throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -18,7 +19,7 @@ public class Main {
             new GroceryStore().getCashRegister()
                     .forEach(j -> executorService.submit(() -> dailyRevenue.add(j)));
         }
-        executorService.awaitTermination(3, TimeUnit.SECONDS);
+        executorService.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
         System.out.printf("\nОбщая дневная выручка %s магазинов: %d руб. %d коп.\n", NUMBER_GROCERY_STORE,
                 dailyRevenue.sum() / 100, dailyRevenue.sum() % 100);
         executorService.shutdown();
